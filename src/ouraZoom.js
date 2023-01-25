@@ -381,6 +381,7 @@ export function getActivitySummaryWeekData(dataModel,data) {
         }
     })
     overviewData["length"] = data.length
+    console.log("Oura Activity Zoom", overviewData)
     return overviewData
 }
 

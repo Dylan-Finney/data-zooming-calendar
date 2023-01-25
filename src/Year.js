@@ -146,7 +146,7 @@ class Calendar extends React.Component {
 class Year extends React.Component {
   
   render() {
-    console.log("Year Props", this.props)
+    // console.log("Year Props", this.props)
     let { date, ...props } = this.props
     let events = this.props.events
     let onDrillDown = this.props.onDrillDown

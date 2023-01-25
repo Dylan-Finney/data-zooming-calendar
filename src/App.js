@@ -19,9 +19,18 @@ import {
   getWhoopRecoveryWeekData,
   getWhoopCycleWeekData
 } from "./whoopZoom"
+import {
+  getTwitchBannedUsersWeekData,
+  getTwitchVideosWeekData,
+  getTwitchBitsLeaderboardWeekData,
+  getTwitchPollsWeekData,
+  getTwitchHypeTrainEventWeekData,
+  getTwitchPredictionWeekData
+} from "./twitchZoom"
 import { useState,useCallback, useEffect } from "react";
 import Year from "./Year";
 import React, { Fragment, useMemo } from 'react'
+import { SketchPicker } from "react-color";
 
 // const localizer = Calendar.momentLocalizer(moment); // or globalizeLocalizer
 // localizer.formats.yearHeaderFormat = "YYYY";
@@ -484,7 +493,270 @@ const whoopEvents = [
   }
 ]
 
-const events = [].concat(...ouraEvents,...googleEvents,...whoopEvents)
+const twitchEvents = [
+  {
+    "id": "335921245",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "Videos",
+    "stream_id": null,
+    "user_id": "141981764",
+    "user_login": "twitchdev",
+    "user_name": "TwitchDev",
+    "title": "Twitch Developers 101",
+    "description": "Welcome to Twitch development! Here is a quick overview of our products and information to help you get started.",
+    "created_at": "2018-11-14T21:30:18Z",
+    "published_at": "2018-11-14T22:04:30Z",
+    "url": "https://www.twitch.tv/videos/335921245",
+    "thumbnail_url": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/twitchdev/335921245/ce0f3a7f-57a3-4152-bc06-0c6610189fb3/thumb/index-0000000000-%{width}x%{height}.jpg",
+    "viewable": "public",
+    "view_count": 1863062,
+    "language": "en",
+    "type": "upload",
+    "duration": "3m21s",
+    "muted_segments": [
+      {
+        "duration": 30,
+        "offset": 120
+      }
+    ]
+  },
+  {
+    "id": "141981764",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "Users",
+    "login": "twitchdev",
+    "display_name": "TwitchDev",
+    "type": "",
+    "broadcaster_type": "partner",
+    "description": "Supporting third-party developers building Twitch integrations from chatbots to game integrations.",
+    "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png",
+    "offline_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png",
+    "view_count": 5980557,
+    "email": "not-real@email.com",
+    "created_at": "2016-12-14T20:32:28Z"
+  },
+  {
+    "user_id": "423374343",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "BannedUsers",
+    "user_login": "glowillig",
+    "user_name": "glowillig",
+    "expires_at": "2022-03-15T02:00:28Z",
+    "created_at": "2022-03-15T01:30:28Z",
+    "reason": "Does not like pineapple on pizza.",
+    "moderator_id": "141981764",
+    "moderator_login": "twitchdev",
+    "moderator_name": "TwitchDev"
+  }
+  ,
+  {
+    "user_id": "423374343",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "BannedUsers",
+    "user_login": "glowillig",
+    "user_name": "glowillig",
+    "expires_at": "2022-03-15T02:30:28Z",
+    "created_at": "2022-03-15T01:30:28Z",
+    "reason": "Does not like pineapple on pizza.",
+    "moderator_id": "141981765",
+    "moderator_login": "twitchdev2",
+    "moderator_name": "TwitchDev2"
+  }
+  ,
+  {
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "BitsLeaderboard",
+    "data": [
+      {
+        "user_id": "158010205",
+        "user_login": "tundracowboy",
+        "user_name": "TundraCowboy",
+        "rank": 1,
+        "score": 12543
+      },
+      {
+        "user_id": "7168163",
+        "user_login": "topramens",
+        "user_name": "Topramens",
+        "rank": 2,
+        "score": 6900
+      }
+    ],
+    "date_range": {
+      "started_at": "2018-02-05T08:00:00Z",
+      "ended_at": "2018-02-12T08:00:00Z"
+    },
+    "total": 2
+  }, {
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "ChannelEditors",
+    "user_id": "135093069",
+    "user_name": "BlueLava",
+    "created_at": "2018-03-07T16:28:29.872937Z"
+  },{
+    "id": "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "Poll",
+    "broadcaster_id": "55696719",
+    "broadcaster_name": "TwitchDev",
+    "broadcaster_login": "twitchdev",
+    "title": "Heads or Tails?",
+    "choices": [
+      {
+        "id": "4c123012-1351-4f33-84b7-43856e7a0f47",
+        "title": "Heads",
+        "votes": 1,
+        "channel_points_votes": 0,
+        "bits_votes": 0
+      },
+      {
+        "id": "279087e3-54a7-467e-bcd0-c1393fcea4f0",
+        "title": "Tails",
+        "votes": 2,
+        "channel_points_votes": 0,
+        "bits_votes": 0
+      }
+    ],
+    "bits_voting_enabled": false,
+    "bits_per_vote": 0,
+    "channel_points_voting_enabled": false,
+    "channel_points_per_vote": 0,
+    "status": "ACTIVE",
+    "duration": 1800,
+    "started_at": "2021-03-19T06:08:33.871278372Z"
+  },
+  {
+    "id": "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "Poll",
+    "broadcaster_id": "55696719",
+    "broadcaster_name": "TwitchDev",
+    "broadcaster_login": "twitchdev",
+    "title": "Heads or Tails?",
+    "choices": [
+      {
+        "id": "4c123012-1351-4f33-84b7-43856e7a0f47",
+        "title": "Heads",
+        "votes": 20,
+        "channel_points_votes": 0,
+        "bits_votes": 0
+      },
+      {
+        "id": "279087e3-54a7-467e-bcd0-c1393fcea4f0",
+        "title": "Tails",
+        "votes": 10,
+        "channel_points_votes": 0,
+        "bits_votes": 0
+      }
+    ],
+    "bits_voting_enabled": false,
+    "bits_per_vote": 0,
+    "channel_points_voting_enabled": false,
+    "channel_points_per_vote": 0,
+    "status": "ACTIVE",
+    "duration": 1800,
+    "started_at": "2021-03-19T06:08:33.871278372Z"
+  },
+  {
+    "id": "d6676d5c-c86e-44d2-bfc4-100fb48f0656",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "Prediction",
+    "broadcaster_id": "55696719",
+    "broadcaster_name": "TwitchDev",
+    "broadcaster_login": "twitchdev",
+    "title": "Will there be any leaks today?",
+    "winning_outcome_id": null,
+    "outcomes": [
+      {
+        "id": "021e9234-5893-49b4-982e-cfe9a0aaddd9",
+        "title": "Yes",
+        "users": 0,
+        "channel_points": 0,
+        "top_predictors": [
+          {
+            "user": {
+              "id": "141981764",
+              "name": "twitchdev",
+              "login": "twitchdev",
+              "channel_points_used": 20000,
+              "channel_points_won": null,
+            }
+          }
+        ],
+        "color": "BLUE"
+      },
+      {
+        "id": "ded84c26-13cb-4b48-8cb5-5bae3ec3a66e",
+        "title": "No",
+        "users": 0,
+        "channel_points": 0,
+        "top_predictors": null,
+        "color": "PINK"
+      }
+    ],
+    "prediction_window": 600,
+    "status": "ACTIVE",
+    "created_at": "2021-04-28T16:03:06.320848689Z",
+    "ended_at": null,
+    "locked_at": null
+  },{
+    "id": "1b0AsbInCHZW2SQFQkCzqN07Ib2",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "HypeTrainEvent",
+    "event_type": "hypetrain.progression",
+    "event_timestamp": "2020-04-24T20:07:24Z",
+    "version": "1.0",
+    "event_data": {
+      "broadcaster_id": "270954519",
+      "cooldown_end_time": "2020-04-24T20:13:21.003802269Z",
+      "expires_at": "2020-04-24T20:12:21.003802269Z",
+      "goal": 1800,
+      "id": "70f0c7d8-ff60-4c50-b138-f3a352833b50",
+      "last_contribution": {
+        "total": 200,
+        "type": "BITS",
+        "user": "134247454"
+      },
+      "level": 2,
+      "started_at": "2020-04-24T20:05:47.30473127Z",
+      "top_contributions": [
+        {
+          "total": 600,
+          "type": "BITS",
+          "user": "134247450"
+        }
+      ],
+      "total": 600
+    }
+  },{
+    "id": "1woowvbkiNv8BRxEWSqmQz6Zk92",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "CreatorGoals",
+    "broadcaster_id": "141981764",
+    "broadcaster_name": "TwitchDev",
+    "broadcaster_login": "twitchdev",
+    "type": "follower",
+    "description": "Follow goal for Helix testing",
+    "current_amount": 27062,
+    "target_amount": 30000,
+    "created_at": "2021-08-16T17:22:23Z"
+  },{
+    "id": "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=",
+    prifinaSourceType: "Twitch",
+    prifinaSourceEventType: "ChannelStreamSchedule",
+    "start_time": "2021-07-01T18:00:00Z",
+    "end_time": "2021-07-01T19:00:00Z",
+    "title": "TwitchDev Monthly Update // July 1, 2021",
+    "canceled_until": null,
+    "category": {
+        "id": "509670",
+        "name": "Science & Technology"
+    },
+    "is_recurring": false
+  },
+]
+
+const events = [].concat(...ouraEvents,...googleEvents,...whoopEvents,...twitchEvents)
 
 
 
@@ -496,153 +768,297 @@ const varToString = (attr) => {
   str = str.join(" ")
   return str
 }
-var myEventsList = []
-for (var i =0; i< events.length;i++){
-  switch(events[i].prifinaSourceType){
+// var myEventsList = []
+const addEvent = (event) => {
+  switch(event.prifinaSourceType){
     case "Oura":
-      switch(events[i].prifinaSourceEventType){
+      switch(event.prifinaSourceEventType){
         case "Readiness":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.summary_date}`,
             allDay: true,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].summary_date),
-            end: new Date(events[i].summary_date),
-            data: events[i],
-          })
-          break
+            start: new Date(event.summary_date),
+            end: new Date(event.summary_date),
+            data: event,
+          }
         case "SleepSummary":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.summary_date}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].bedtime_start),
-            end: new Date(events[i].bedtime_end),
-            data: events[i],
-          })
-          break
+            start: new Date(event.bedtime_start),
+            end: new Date(event.bedtime_end),
+            data: event,
+          }
         case "Activity":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].summary_date}`,
+          return{
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.summary_date}`,
             Day: true,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].summary_date),
-            end: new Date(events[i].summary_date),
-            data: events[i],
-          })
-          break
+            start: new Date(event.summary_date),
+            end: new Date(event.summary_date),
+            data: event,
+          }
         default:
           break
       }
       break
     case "Google":
-      switch(events[i].prifinaSourceEventType){
+      switch(event.prifinaSourceEventType){
         case "Route":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.startTimestamp.split("T")[0]}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].startTimestamp),
-            end: new Date(events[i].endTimestamp),
-            data: events[i],
-          })
-          break
+            start: new Date(event.startTimestamp),
+            end: new Date(event.endTimestamp),
+            data: event,
+          }
         case "Place":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].startTimestamp.split("T")[0]}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.startTimestamp.split("T")[0]}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].startTimestamp),
-            end: new Date(events[i].endTimestamp),
-            data: events[i],
-          })
-          break
+            start: new Date(event.startTimestamp),
+            end: new Date(event.endTimestamp),
+            data: event,
+          }
         case "Activity":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.p_datetime}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].p_datetime),
-            end: new Date((new Date(events[i].p_datetime)).getTime()+1),
-            data: events[i],
-          })
-          break
+            start: new Date(event.p_datetime),
+            end: new Date((new Date(event.p_datetime)).getTime()+1),
+            data: event,
+          }
         case "Location":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].p_datetime}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.p_datetime}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].p_datetime),
-            end: new Date((new Date(events[i].p_datetime)).getTime()+1),
-            data: events[i],
-          })
-          break
+            start: new Date(event.p_datetime),
+            end: new Date((new Date(event.p_datetime)).getTime()+1),
+            data: event,
+          }
         default:
           break
       }
       break
     case "Whoop":
-      switch(events[i].prifinaSourceEventType){
+      switch(event.prifinaSourceEventType){
         case "Cycle":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].created_at}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].start),
-            end: new Date(events[i].end),
-            data: events[i],
-          })
-          break
+            start: new Date(event.start),
+            end: new Date(event.end),
+            data: event,
+          }
         case "Recovery":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].created_at}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
             allDay: true,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].created_at),
-            end: new Date(events[i].created_at),
-            data: events[i],
-          })
-          break
+            start: new Date(event.created_at),
+            end: new Date(event.created_at),
+            data: event,
+          }
         case "Sleep":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].updated_at}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.updated_at}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].start),
-            end: new Date(events[i].end),
-            data: events[i],
-          })
-          break
+            start: new Date(event.start),
+            end: new Date(event.end),
+            data: event,
+          }
         case "Workout":
-          myEventsList.push({
-            title: `${events[i].prifinaSourceType} ${events[i].prifinaSourceEventType} - ${events[i].updated_at}`,
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.updated_at}`,
             allDay: false,
             // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
             // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
-            start: new Date(events[i].start),
-            end: new Date(events[i].end),
-            data: events[i],
-          })
+            start: new Date(event.start),
+            end: new Date(event.end),
+            data: event,
+          }
           break
         default:
           break
       }
       break  
+    case "Twitch":
+      switch(event.prifinaSourceEventType){
+        case "BannedUsers":
+          switch(event.expires_at){
+            case "":
+              return {
+                title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
+                allDay: false,
+                // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+                // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+                start: new Date(event.created_at),
+                end: new Date(event.created_at),
+                data: event,
+              }
+            default:
+              return {
+                title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
+                allDay: false,
+                // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+                // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+                start: new Date(event.created_at),
+                end: new Date(event.expires_at),
+                data: event,
+              }
+          }
+        case "BitsLeaderboard":
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.date_range.started_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.date_range.started_at),
+            end: new Date(event.date_range.ended_at),
+            data: event,
+          }
+        case "ChannelStreamSchedule":
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.title} - ${event.start_time}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.start_time),
+            end: new Date(event.end_time),
+            data: event,
+          }
+        case "CreatorGoals":
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.created_at),
+            end: new Date(event.created_at),
+            data: event,
+          }
+        case "HypeTrainEvent":
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.event_data.started_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.event_data.started_at),
+            end: new Date(event.event_data.expires_at),
+            data: event,
+          }
+        case "Poll":
+          var ended_at = new Date(event.started_at)
+          ended_at.setSeconds(ended_at.getSeconds()+event.duration)
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.started_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.started_at),
+            end: ended_at,
+            data: event,
+          }
+        case "Prediction":
+          switch(event.ended_at){
+            case null:
+              return {
+                title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
+                allDay: false,
+                // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+                // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+                start: new Date(event.created_at),
+                end: new Date(event.created_at),
+                data: event,
+              }
+            default:
+              return {
+                title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
+                allDay: false,
+                // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+                // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+                start: new Date(event.created_at),
+                end: new Date(event.ended_at),
+                data: event,
+              }
+          }
+        case "ChannelEditors":
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.user_name}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.created_at),
+            end: new Date(event.created_at),
+            data: event,
+          }
+        
+        case "Users":
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.created_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.created_at),
+            end: new Date(event.created_at),
+            data: event,
+          }
+        case "Videos":
+          var started_at = new Date(event.created_at)
+          var ended_At = new Date(started_at.getTime())
+          var duration = event.duration
+          ended_At.setTime(ended_At.getTime()+parseInt(event.duration.split("m")[1]))
+          if (duration.includes("h")){
+            ended_At.setHours(ended_At.getHours()+parseInt(event.duration.split("h")[0]))
+            duration = duration.split("h")[1]
+          }
+          if (duration.includes("m")){
+            ended_At.setMinutes(ended_At.getMinutes()+parseInt(event.duration.split("m")[0]))
+            duration = duration.split("m")[1]
+          }
+          if (duration.includes("s")){
+            ended_At.setTime(ended_At.getTime()+parseInt(event.duration.split("s")[0]))
+          }
+          return {
+            title: `${event.prifinaSourceType} ${event.prifinaSourceEventType} - ${event.title} - ${event.created_at}`,
+            allDay: false,
+            // start: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2])),
+            // end: new Date(parseInt(ReadinessZoom.display[0].summary_date.split("-")[0]), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
+            start: new Date(event.created_at),
+            end: ended_At,
+            data: event,
+          }
+        default:
+          break
+      }
+      break    
     default:
       break
   }
-  
 }
+console.log(events)
+// for (var i =0; i< events.length;i++){
+//   myEventsList.push(addEvent(events[i]))
+//   console.log("myEventsList inital", myEventsList)
+// }
 
 function App() {
   const localizer = momentLocalizer(moment) // or globalizeLocalizer
@@ -674,25 +1090,39 @@ function App() {
   const [zoomData, setZoomData] = useState(0)
   const [sourcesShown, setSourcesShown] = useState({})
   const [typesShown, setTypesShown] = useState({})
+  const [colors, setColors] = useState({
+    "Google": "#4b001d",
+    "Oura": "#1a472a",
+    "Twitch": "#ab0013",
+    "Whoop": "#fdef19"
+  })
+  const [color, setColor] = useState()
   const [date, setDate] = useState(new Date())
+  const [filterEvents, setFilterEvents] = useState({
+    "Google": true,
+    "Oura": true,
+    "Twitch": true,
+    "Whoop": true
+  })
+  var initialEventList = []
+  for (var i =0; i< events.length;i++){
+    initialEventList.push(addEvent(events[i]))
+    // console.log("myEventsList inital", initialEventList)
+  }
+  const [myEventsList, SetMyEventsList] = useState(initialEventList)
 
 
 const onView = useCallback((newView) => {
-  console.log(newView)
+  // console.log(newView)
   setView(newView)}, [setView])
 const onRangeChange = useCallback((newRange) => {
-  console.log("newRange",newRange)
+  // console.log("newRange",newRange)
   setRange(newRange)}, [setRange])
 const onSelectEvent = useCallback((event) => {
   // console.log(event)
   window.alert(JSON.stringify(event.data))}, [])
-const getNow = () => {
-  console.log("value",1)
-  return (
-    <>
-    </>
-  )
-}
+
+
 const onDrillDown = useCallback(
   (newDate) => {
     setDate(new Date(newDate))
@@ -711,8 +1141,8 @@ const getZoomData = () => {
   var sourceData = {}
   var typesShown = {}
   var filteredData
-  console.log("getZoomData")
-  console.log("RANGE", range)
+  // console.log("getZoomData")
+  // console.log("RANGE", range)
   if (view === "week"){
     filteredData = myEventsList.filter((event)=>{
       // console.log("",event)
@@ -875,6 +1305,61 @@ const getZoomData = () => {
             }
           })
           break    
+        case "Twitch":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "BannedUsers":
+                finalData[key][type] = getTwitchBannedUsersWeekData("BannedUsersWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Videos":
+                finalData[key][type] = getTwitchVideosWeekData("VideosWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "BitsLeaderboard":
+                finalData[key][type] = getTwitchBitsLeaderboardWeekData("BitsLeaderboardWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Poll":
+                finalData[key][type] = getTwitchPollsWeekData("PollsWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "HypeTrainEvent":
+                finalData[key][type] = getTwitchHypeTrainEventWeekData("HypeTrainEventWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              default:
+                break
+            }
+          }) 
+          break
         default:
           break
       }
@@ -891,7 +1376,7 @@ const getZoomData = () => {
     // }
     
   } else if (view === "month") {
-
+    console.log("DataZoomEvents",myEventsList)
     filteredData = myEventsList.filter((event)=>{
       // console.log("",event)
         // console.log(range[i].getDate())
@@ -901,7 +1386,7 @@ const getZoomData = () => {
           return false
         }
     })
-    console.log(filteredData)
+    // console.log(filteredData)
     var sources = {}
     for (var i = 0; i< filteredData.length;i++){
       if (sources[filteredData[i].data.prifinaSourceType]===undefined){
@@ -1051,6 +1536,61 @@ const getZoomData = () => {
             }
           })
           break    
+        case "Twitch":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "BannedUsers":
+                finalData[key][type] = getTwitchBannedUsersWeekData("BannedUsersWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Videos":
+                finalData[key][type] = getTwitchVideosWeekData("VideosWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "BitsLeaderboard":
+                finalData[key][type] = getTwitchBitsLeaderboardWeekData("BitsLeaderboardWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Poll":
+                finalData[key][type] = getTwitchPollsWeekData("PollsWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "HypeTrainEvent":
+                finalData[key][type] = getTwitchHypeTrainEventWeekData("HypeTrainEventWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              default:
+                break
+            }
+          }) 
+          break
         default:
           break
       }
@@ -1069,7 +1609,7 @@ const getZoomData = () => {
           return false
         }
     })
-    console.log(filteredData)
+    // console.log(filteredData)
     var sources = {}
     for (var i = 0; i< filteredData.length;i++){
       if (sources[filteredData[i].data.prifinaSourceType]===undefined){
@@ -1218,7 +1758,62 @@ const getZoomData = () => {
                 break
             }
           })
-          break        
+          break
+        case "Twitch":
+          value.forEach((type)=>{
+            finalData[key][type] = {}
+            typesShown[key][type] = false
+            switch(type){
+              case "BannedUsers":
+                finalData[key][type] = getTwitchBannedUsersWeekData("BannedUsersWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Videos":
+                finalData[key][type] = getTwitchVideosWeekData("VideosWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "BitsLeaderboard":
+                finalData[key][type] = getTwitchBitsLeaderboardWeekData("BitsLeaderboardWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "Poll":
+                finalData[key][type] = getTwitchPollsWeekData("PollsWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              case "HypeTrainEvent":
+                finalData[key][type] = getTwitchHypeTrainEventWeekData("HypeTrainEventWeek",[].concat(...filteredData.filter((event)=>{
+                  if (event.data.prifinaSourceType === key && event.data.prifinaSourceEventType === type){
+                    return true
+                  } else {
+                    return false
+                  }
+                }).map(b=>b.data)) )
+                break
+              default:
+                break
+            }
+          }) 
+          break
         default:
           break
       }
@@ -1272,7 +1867,26 @@ useEffect(() => {
   //Runs only on the first render
   getZoomData()
   // console.log(zoomData)
-}, [range]);
+}, [range,myEventsList]);
+
+useEffect(() => {
+  //Runs only on the first render
+  var filteredEvents = events.filter(event=>{
+    if (filterEvents[event["prifinaSourceType"]]) {
+      return true
+    } else {
+      return false
+    }
+  })
+  var newEventsList = []
+  for (var i =0; i< filteredEvents.length;i++){
+    newEventsList.push(addEvent(filteredEvents[i]))
+    
+  }
+  SetMyEventsList([...newEventsList])
+  console.table("myEventsList",myEventsList)
+  // console.log(zoomData)
+}, [filterEvents]);
 
 // useEffect(() => {
 //   //Runs only on the first render
@@ -1348,7 +1962,7 @@ const dataView = (source, type, aggregateData) => {
                 </>
               )
             case "Location":
-              console.log("test")
+              // console.log("test")
               return (
                 <>
                   <p>Average Accuracy: {aggregateData.accuracy}%</p>
@@ -1466,6 +2080,79 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break    
+        case "Twitch":
+          switch(type){
+            case "BannedUsers":
+              return (
+                <>
+                  <p><strong>Ban Lengths:</strong></p>
+                  <p>{millisecondsDisplay(aggregateData["ban_lengths"]["max"])}|{millisecondsDisplay(aggregateData["ban_lengths"]["avg"])}|{millisecondsDisplay(aggregateData["ban_lengths"]["min"])}</p>
+                  <p>Bans Per Mod: {aggregateData["bans_per_mod"]}</p>
+                  <p>Mod(s) with Most Bans:</p>
+                  {console.log("aggregateData",aggregateData)}
+                  <p>{aggregateData["most_banning_mod"]["display_name"].join(", ")}:{aggregateData["most_banning_mod"]["num_of_bans"]}</p>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "Videos":
+              return (
+                <>
+                  {console.log("aggregateData Videos",aggregateData)}
+                  <p><strong>Durations:</strong></p>
+                  <p>{secondsDisplay(aggregateData["durations"]["min"])}|{secondsDisplay(aggregateData["durations"]["avg"])}|{secondsDisplay(aggregateData["durations"]["max"])}|{secondsDisplay(aggregateData["durations"]["total"])}</p>
+                  <p><strong>Viewcounts:</strong></p>
+                  <p>{aggregateData["view_count"]["min"]}|{aggregateData["view_count"]["avg"]}|{aggregateData["view_count"]["max"]}|{aggregateData["view_count"]["total"]}</p>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "BitsLeaderboard":
+              return (
+                <>
+                  <p><strong>scores:</strong></p>
+                  <p>{aggregateData["scores"]["min"]}|{aggregateData["scores"]["avg"]}|{aggregateData["scores"]["max"]}|{aggregateData["scores"]["total"]}</p>
+                  <p><strong>Most Donos:</strong></p>
+                  <ul>
+                  {
+                    aggregateData["most_donos"].map((obj)=>(
+                      <>
+                        <li>{obj["user_name"]} - {obj["score"]}</li>
+                      </>
+                    ))
+                  }
+                  </ul>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "Poll":
+              return (
+                <>
+                  <p><strong>Durations:</strong></p>
+                  <p>{secondsDisplay(aggregateData["durations"]["min"])}|{secondsDisplay(aggregateData["durations"]["avg"])}|{secondsDisplay(aggregateData["durations"]["max"])}|{secondsDisplay(aggregateData["durations"]["total"])}</p>
+                  <p><strong>Total Votes:</strong></p>
+                  <p>{aggregateData.total_votes.min}|{aggregateData.total_votes.avg}|{aggregateData.total_votes.max}|{aggregateData.total_votes.total}</p>
+                  <p><strong>Total Votes Per Poll:</strong></p>
+                  <p>{aggregateData.total_votes_per_poll.avg_min}|{aggregateData.total_votes_per_poll.avg}|{aggregateData.total_votes_per_poll.avg_max}</p>
+                </>
+              )
+            case "HypeTrainEvent":
+              return (
+                <>
+                  <p><strong>Total Points Used:</strong></p>
+                  <p>{aggregateData.total.min}|{aggregateData.total.avg}|{aggregateData.total.max}|{aggregateData.total.total}</p>
+                  <p><strong>Average Level:</strong> {aggregateData["level"]}</p>
+                </>
+              )
+            case "Prediction":
+              return (
+                <>
+                  <p><strong>Total Users:</strong> {aggregateData["total_users"]}</p>
+                  <p><strong>Total Users Per Prediction:</strong> {aggregateData["total_users_per_prediction"]}</p>
+                </>
+              )
+            default:
+              break
+          }
+          break
         default:
           break
       }
@@ -1536,7 +2223,7 @@ const dataView = (source, type, aggregateData) => {
                 </>
               )
             case "Location":
-              console.log("test")
+              // console.log("test")
               return (
                 <>
                   <p>Average Accuracy: {aggregateData.accuracy}%</p>
@@ -1654,6 +2341,79 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break  
+        case "Twitch":
+          switch(type){
+            case "BannedUsers":
+              return (
+                <>
+                  <p><strong>Ban Lengths:</strong></p>
+                  <p>{millisecondsDisplay(aggregateData["ban_lengths"]["max"])}|{millisecondsDisplay(aggregateData["ban_lengths"]["avg"])}|{millisecondsDisplay(aggregateData["ban_lengths"]["min"])}</p>
+                  <p>Bans Per Mod: {aggregateData["bans_per_mod"]}</p>
+                  <p>Mod(s) with Most Bans:</p>
+                  {console.log("aggregateData",aggregateData)}
+                  <p>{aggregateData["most_banning_mod"]["display_name"].join(", ")}:{aggregateData["most_banning_mod"]["num_of_bans"]}</p>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "Videos":
+              return (
+                <>
+                  {console.log("aggregateData Videos",aggregateData)}
+                  <p><strong>Durations:</strong></p>
+                  <p>{secondsDisplay(aggregateData["durations"]["min"])}|{secondsDisplay(aggregateData["durations"]["avg"])}|{secondsDisplay(aggregateData["durations"]["max"])}|{secondsDisplay(aggregateData["durations"]["total"])}</p>
+                  <p><strong>Viewcounts:</strong></p>
+                  <p>{aggregateData["view_count"]["min"]}|{aggregateData["view_count"]["avg"]}|{aggregateData["view_count"]["max"]}|{aggregateData["view_count"]["total"]}</p>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "BitsLeaderboard":
+              return (
+                <>
+                  <p><strong>scores:</strong></p>
+                  <p>{aggregateData["scores"]["min"]}|{aggregateData["scores"]["avg"]}|{aggregateData["scores"]["max"]}|{aggregateData["scores"]["total"]}</p>
+                  <p><strong>Most Donos:</strong></p>
+                  <ul>
+                  {
+                    aggregateData["most_donos"].map((obj)=>(
+                      <>
+                        <li>{obj["user_name"]} - {obj["score"]}</li>
+                      </>
+                    ))
+                  }
+                  </ul>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "Poll":
+              return (
+                <>
+                  <p><strong>Durations:</strong></p>
+                  <p>{secondsDisplay(aggregateData["durations"]["min"])}|{secondsDisplay(aggregateData["durations"]["avg"])}|{secondsDisplay(aggregateData["durations"]["max"])}|{secondsDisplay(aggregateData["durations"]["total"])}</p>
+                  <p><strong>Total Votes:</strong></p>
+                  <p>{aggregateData.total_votes.min}|{aggregateData.total_votes.avg}|{aggregateData.total_votes.max}|{aggregateData.total_votes.total}</p>
+                  <p><strong>Total Votes Per Poll:</strong></p>
+                  <p>{aggregateData.total_votes_per_poll.avg_min}|{aggregateData.total_votes_per_poll.avg}|{aggregateData.total_votes_per_poll.avg_max}</p>
+                </>
+              )
+            case "HypeTrainEvent":
+              return (
+                <>
+                  <p><strong>Total Points Used:</strong></p>
+                  <p>{aggregateData.total.min}|{aggregateData.total.avg}|{aggregateData.total.max}|{aggregateData.total.total}</p>
+                  <p><strong>Average Level:</strong> {aggregateData["level"]}</p>
+                </>
+              )
+            case "Prediction":
+              return (
+                <>
+                  <p><strong>Total Users:</strong> {aggregateData["total_users"]}</p>
+                  <p><strong>Total Users Per Prediction:</strong> {aggregateData["total_users_per_prediction"]}</p>
+                </>
+              )
+            default:
+              break
+          }
+          break
         default:
           break
       }
@@ -1724,7 +2484,7 @@ const dataView = (source, type, aggregateData) => {
               </>
             )
           case "Location":
-            console.log("test")
+            // console.log("test")
             return (
               <>
                 <p>Average Accuracy: {aggregateData.accuracy}%</p>
@@ -1842,10 +2602,80 @@ const dataView = (source, type, aggregateData) => {
               break
           }
           break  
+        case "Twitch":
+          switch(type){
+            case "BannedUsers":
+              return (
+                <>
+                  <p><strong>Ban Lengths:</strong></p>
+                  <p>{millisecondsDisplay(aggregateData["ban_lengths"]["max"])}|{millisecondsDisplay(aggregateData["ban_lengths"]["avg"])}|{millisecondsDisplay(aggregateData["ban_lengths"]["min"])}</p>
+                  <p>Bans Per Mod: {aggregateData["bans_per_mod"]}</p>
+                  <p>Mod(s) with Most Bans:</p>
+                  <p>{aggregateData["most_banning_mod"]["display_name"].join(", ")}:{aggregateData["most_banning_mod"]["num_of_bans"]}</p>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "Videos":
+              return (
+                <>
+                  <p><strong>Durations:</strong></p>
+                  <p>{secondsDisplay(aggregateData["durations"]["min"])}|{secondsDisplay(aggregateData["durations"]["avg"])}|{secondsDisplay(aggregateData["durations"]["max"])}|{secondsDisplay(aggregateData["durations"]["total"])}</p>
+                  <p><strong>Viewcounts:</strong></p>
+                  <p>{aggregateData["view_count"]["min"]}|{aggregateData["view_count"]["avg"]}|{aggregateData["view_count"]["max"]}|{aggregateData["view_count"]["total"]}</p>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "BitsLeaderboard":
+              return (
+                <>
+                  <p><strong>scores:</strong></p>
+                  <p>{aggregateData["scores"]["min"]}|{aggregateData["scores"]["avg"]}|{aggregateData["scores"]["max"]}|{aggregateData["scores"]["total"]}</p>
+                  <p><strong>Most Donos:</strong></p>
+                  <ul>
+                  {
+                    aggregateData["most_donos"].map((obj)=>(
+                      <>
+                        <li>{obj["user_name"]} - {obj["score"]}</li>
+                      </>
+                    ))
+                  }
+                  </ul>
+                  {/* <p>{aggregateData.average_heart_rate.max}|{aggregateData.average_heart_rate.avg}|{aggregateData.average_heart_rate.min}</p> */}
+                </>
+              )
+            case "Poll":
+              return (
+                <>
+                  <p><strong>Durations:</strong></p>
+                  <p>{secondsDisplay(aggregateData["durations"]["min"])}|{secondsDisplay(aggregateData["durations"]["avg"])}|{secondsDisplay(aggregateData["durations"]["max"])}|{secondsDisplay(aggregateData["durations"]["total"])}</p>
+                  <p><strong>Total Votes:</strong></p>
+                  <p>{aggregateData.total_votes.min}|{aggregateData.total_votes.avg}|{aggregateData.total_votes.max}|{aggregateData.total_votes.total}</p>
+                  <p><strong>Total Votes Per Poll:</strong></p>
+                  <p>{aggregateData.total_votes_per_poll.avg_min}|{aggregateData.total_votes_per_poll.avg}|{aggregateData.total_votes_per_poll.avg_max}</p>
+                </>
+              )
+            case "HypeTrainEvent":
+              return (
+                <>
+                  <p><strong>Total Points Used:</strong></p>
+                  <p>{aggregateData.total.min}|{aggregateData.total.avg}|{aggregateData.total.max}|{aggregateData.total.total}</p>
+                  <p><strong>Average Level:</strong> {aggregateData["level"]}</p>
+                </>
+              )
+            case "Prediction":
+              return (
+                <>
+                  <p><strong>Total Users:</strong> {aggregateData["total_users"]}</p>
+                  <p><strong>Total Users Per Prediction:</strong> {aggregateData["total_users_per_prediction"]}</p>
+                </>
+              )
+            default:
+              break
+          }
+          break
         default:
           break
       }
-      break
       break
     default:
       break
@@ -1884,6 +2714,18 @@ const exapndAll = (bool) => {
 //     end: new Date(parseInt(2022), parseInt(ReadinessZoom.display[0].summary_date.split("-")[1])+1, parseInt(ReadinessZoom.display[0].summary_date.split("-")[2]))
 //   }
 // ]
+
+
+const eventStyleGetter = (event, start, end, isSelected) => {
+  return {
+    style: {
+      opacity: isSelected ? 1 : 0.9,
+      borderColor: colors[event.data.prifinaSourceType],
+      backgroundColor: colors[event.data.prifinaSourceType],
+    },
+  };
+};
+
   return (
     <>
     <div className="body">
@@ -2102,6 +2944,28 @@ const exapndAll = (bool) => {
         </>
       )}
       </div>
+      <div>
+        {
+          Object.entries(filterEvents).map(([source, value])=>(
+            <>
+            <input type={"checkbox"} checked={value} onChange={()=>{
+              console.log(`${source} checkbox`)
+              setFilterEvents({
+                ...filterEvents,
+                [source]: !filterEvents[source]
+              })
+            }}/>
+            <input type={"color"} value={colors[source]} onChange={(e)=>{
+              setColors({
+                ...colors,
+                [source]: e.target.value
+              })
+            }}></input>
+            <label>{source}</label><br/>
+            </>
+          ))
+        }
+      </div>
     </div>
     <Calendar className="calendar"
       localizer={localizer}
@@ -2119,6 +2983,7 @@ const exapndAll = (bool) => {
       onDrillDown={onDrillDown}
       date={date}
       onNavigate={onNavigate}
+      eventPropGetter={eventStyleGetter}
     />
     </div>
     </>
